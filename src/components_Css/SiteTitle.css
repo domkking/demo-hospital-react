@@ -1,0 +1,17 @@
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+.container-title{
+    position: relative;
+    left: 0;
+    right: 0;
+    margin: auto;
+    top: 0;
+    text-align: center;
+}
+
+.container-title h1{
+    font-family: 'Poppins'; 
+    font-size: 40px;
+    font-weight: 500;
+    margin: 0;
+}
