@@ -72,18 +72,17 @@ export default function Tables() {
   const userData = useContext(TableContext);
   const jsonData = JSON.parse(userData);
 
-  interface Column {
-    id: string;
-    label: string;
-    minWidth?: number;
-    align?: "right";
+  function formatKey(str: string) {
+    return (
+      str.charAt(0).toUpperCase() + str.slice(1).replace(/([A-Z])/g, " $&")
+    );
   }
 
-  const columns: readonly Column[] =
+  const columns =
     jsonData.length > 0
       ? Object.keys(jsonData[0]).map((key) => ({
           id: key,
-          label: key,
+          label: formatKey(key),
         }))
       : [];
 
@@ -122,12 +121,13 @@ export default function Tables() {
             >
               <TableHead>
                 <TableRow>
-                  {columns.map((column) => (
-                    <StyledTableCell>{column.label}</StyledTableCell>
+                  {columns.map((column, index) => (
+                    <React.Fragment key={index}>
+                      <StyledTableCell>{column.label}</StyledTableCell>
+                    </React.Fragment>
                   ))}
                 </TableRow>
               </TableHead>
-
               <TableBody>
                 {jsonData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -137,20 +137,17 @@ export default function Tables() {
                       index: React.Key | null | undefined
                     ) => {
                       return (
-                        <StyledTableRow
-                          hover
-                          role="checkbox"
-                          tabIndex={-1}
-                          key={index}
-                        >
-                          {columns.map((column) => {
-                            const value = userDates[column.id];
-                            return (
-                              <StyledTableCell key={column.id}>
-                                {value}
-                              </StyledTableCell>
-                            );
-                          })}
+                        <StyledTableRow hover tabIndex={-1} key={index}>
+                          <React.Fragment key={index}>
+                            {columns.map((column) => {
+                              const value = userDates[column.id];
+                              return (
+                                <StyledTableCell key={column.id}>
+                                  {value}
+                                </StyledTableCell>
+                              );
+                            })}
+                          </React.Fragment>
                         </StyledTableRow>
                       );
                     }
