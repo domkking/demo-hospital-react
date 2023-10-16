@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/demo-hospital-react/static/css/main.bc654057.css",
-    "main.js": "/demo-hospital-react/static/js/main.94d01eb1.js",
+    "main.css": "/demo-hospital-react/static/css/main.e492b5d2.css",
+    "main.js": "/demo-hospital-react/static/js/main.ff85b3ee.js",
     "index.html": "/demo-hospital-react/index.html",
-    "main.bc654057.css.map": "/demo-hospital-react/static/css/main.bc654057.css.map",
-    "main.94d01eb1.js.map": "/demo-hospital-react/static/js/main.94d01eb1.js.map"
+    "main.e492b5d2.css.map": "/demo-hospital-react/static/css/main.e492b5d2.css.map",
+    "main.ff85b3ee.js.map": "/demo-hospital-react/static/js/main.ff85b3ee.js.map"
   },
   "entrypoints": [
-    "static/css/main.bc654057.css",
-    "static/js/main.94d01eb1.js"
+    "static/css/main.e492b5d2.css",
+    "static/js/main.ff85b3ee.js"
   ]
 }
