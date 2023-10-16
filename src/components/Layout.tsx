@@ -40,7 +40,7 @@ export default function Layout() {
   // }, [])
 
   return (
-    <Grid container spacing={2} sx={{ height: "100vh" }}>
+    <Grid container spacing={2} sx={{ height: "100vh", overflow: "hidden" }}>
       <Grid item xs={12} sm={12} md={12}>
         <SiteTitle title="DEMO HOSPITAL" color="#0FA564" />
       </Grid>

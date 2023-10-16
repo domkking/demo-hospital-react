@@ -1,10 +1,16 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import DoctorTable from "./components/Doctor";
+
+import Tables from "./components/Table";
 import HomePage from "./components/HomePage";
-import { UserContext } from "./context/LevelContext";
-import PatientTable from "./components/Patient";
+
+import patientList from "./json/Patient.json";
+import doctorList from "./json/DoctorList.json";
+
+import { TableContext, UserContext } from "./context/LevelContext";
 
 function App() {
+  const doctor = JSON.stringify(doctorList);
+  const patient = JSON.stringify(patientList);
   return (
     <Router>
       <Routes>
@@ -13,7 +19,9 @@ function App() {
           path="/doctor"
           element={
             <UserContext.Provider value="Admin">
-              <DoctorTable />
+              <TableContext.Provider value={doctor}>
+                <Tables />
+              </TableContext.Provider>
             </UserContext.Provider>
           }
         />
@@ -21,7 +29,9 @@ function App() {
           path="/patient"
           element={
             <UserContext.Provider value="PATIENT">
-              <PatientTable />
+              <TableContext.Provider value={patient}>
+                <Tables />
+              </TableContext.Provider>
             </UserContext.Provider>
           }
         />
