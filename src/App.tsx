@@ -1,25 +1,31 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Tables from "./components/Table";
+import SignIn from "./components/SignIn";
 import HomePage from "./components/HomePage";
 
-import patientList from "./json/Patient.json";
-import doctorList from "./json/DoctorList.json";
+import doctor from "./json/Doctor.json"
 
 import { TableContext, UserContext } from "./context/LevelContext";
 
 function App() {
-  const doctor = JSON.stringify(doctorList);
-  const patient = JSON.stringify(patientList);
+  const doctorUser = JSON.stringify(doctor);      
+   
+  const urlAllDoctor = "http://localhost:8080/doctor";    
+  const urlPatient = "http://localhost:8080/patient/DNNDNC03L09C134E";
+  
+
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/signIn" element={<SignIn/>}/>
         <Route
           path="/doctor"
           element={
-            <UserContext.Provider value="Admin">
-              <TableContext.Provider value={doctor}>
+            <UserContext.Provider value="DOCTOR"> 
+              <TableContext.Provider value={doctorUser}>
                 <Tables />
               </TableContext.Provider>
             </UserContext.Provider>
@@ -29,7 +35,17 @@ function App() {
           path="/patient"
           element={
             <UserContext.Provider value="PATIENT">
-              <TableContext.Provider value={patient}>
+              <TableContext.Provider value={urlPatient}>
+                <Tables />
+              </TableContext.Provider>
+            </UserContext.Provider>
+          }
+        />
+        <Route
+          path="/administrator"
+          element={
+            <UserContext.Provider value="ADMIN">
+              <TableContext.Provider value={urlAllDoctor}>
                 <Tables />
               </TableContext.Provider>
             </UserContext.Provider>

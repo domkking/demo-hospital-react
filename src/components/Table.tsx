@@ -1,6 +1,7 @@
 import React from "react";
-import { SetStateAction } from "react";
+import axios from "redaxios";
 import { useContext } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 
 import styled from "styled-components";
 
@@ -15,6 +16,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TablePagination from "@mui/material/TablePagination/TablePagination";
 
 import SiteTitle from "./SiteTitle";
+import Loading from "./LoadingSpinner";
 
 import { useNavigate } from "react-router-dom";
 import { TableContext, UserContext } from "../context/LevelContext";
@@ -66,21 +68,38 @@ const StyledTableRow = styled(TableRow)(() => ({
 
 //FUNCTION COMPONENT
 export default function Tables() {
+  const navigate = useNavigate();
+
+  /////////////////////////// REQUEST /////////////////////////////////////
+  const [dati, setDati] = useState([]);
+  const url = useContext(TableContext);
+
+  useEffect(() => {
+    axios
+      .get(url)
+      .then((response) => {
+          setDati(response.data);
+      })
+      .catch((_error) => {
+        console.log("error");
+      });
+  }, [url]);
+  ////////////////////////////////////////////////////////////////////////
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const user = useContext(UserContext);
-  const userData = useContext(TableContext);
-  const jsonData = JSON.parse(userData);
 
-  function formatKey(str: string) {
+  const user = useContext(UserContext);
+
+  function formatKey(str) {
     return (
       str.charAt(0).toUpperCase() + str.slice(1).replace(/([A-Z])/g, " $&")
     );
   }
 
   const columns =
-    jsonData.length > 0
-      ? Object.keys(jsonData[0]).map((key) => ({
+    dati.length > 0
+      ? Object.keys(dati[0]).map((key) => ({
           id: key,
           label: formatKey(key),
         }))
@@ -97,7 +116,6 @@ export default function Tables() {
     setPage(0);
   };
 
-  const navigate = useNavigate();
   const handleHomeButtonClick = () => {
     navigate("/");
   };
@@ -121,37 +139,33 @@ export default function Tables() {
             >
               <TableHead>
                 <TableRow>
-                  {columns.map((column, index) => (
-                    <React.Fragment key={index}>
-                      <StyledTableCell>{column.label}</StyledTableCell>
-                    </React.Fragment>
+                  {columns.map((column) => (
+                    <StyledTableCell key={column.id}>
+                      {column.label}
+                    </StyledTableCell>
                   ))}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {jsonData
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map(
-                    (
-                      userDates: { [x: string]: any },
-                      index: React.Key | null | undefined
-                    ) => {
-                      return (
-                        <StyledTableRow hover tabIndex={-1} key={index}>
-                          <React.Fragment key={index}>
-                            {columns.map((column) => {
-                              const value = userDates[column.id];
-                              return (
-                                <StyledTableCell key={column.id}>
-                                  {value}
-                                </StyledTableCell>
-                              );
-                            })}
-                          </React.Fragment>
-                        </StyledTableRow>
-                      );
-                    }
-                  )}
+                {dati.length > 0 ? (
+                  dati
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => (
+                      <StyledTableRow hover tabIndex={-1} key={index}>
+                        {columns.map((column) => (
+                          <StyledTableCell key={column.id}>
+                            {row[column.id]}
+                          </StyledTableCell>
+                        ))}
+                      </StyledTableRow>
+                    ))
+                ) : (
+                  <StyledTableRow>
+                    <StyledTableCell>
+                      <Loading />
+                    </StyledTableCell>
+                  </StyledTableRow>
+                )}
               </TableBody>
             </Table>
           </TableContainer>
@@ -159,7 +173,7 @@ export default function Tables() {
             <TablePagination
               rowsPerPageOptions={[10, 25, 100]}
               component="div"
-              count={userData.length}
+              count={dati.length || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -172,7 +186,6 @@ export default function Tables() {
                 fontFamily: "Poppins",
                 fontWeight: "600",
                 border: "1px solid",
-
                 "&:hover": {
                   backgroundColor: "#8287fd",
                   borderColor: "#0062cc",

@@ -1,0 +1,17 @@
+[
+    {
+        "doctorCode": "0481c77a-e40f-42f1-90e8-f6bd7877747c",
+        "doctorName": "Sebastiano",
+        "doctorLastname": "Esposito",
+        "password": "password",
+        "username": "seba"
+    },
+
+    {
+        "doctorCode": "5cbb4720-1840-43c5-9dd0-65792763f141",
+        "doctorName": "Elisa",
+        "doctorLastname": "Superdi",
+        "password": "password",
+        "username": "elisa"
+    }
+]
