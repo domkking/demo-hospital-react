@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { useNavigate } from "react-router-dom";
 
 import Box from "@mui/material/Box";
@@ -12,10 +11,12 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import CssBaseline from "@mui/material/CssBaseline";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import HealthAndSafetyOutlinedIcon from "@mui/icons-material/HealthAndSafetyOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import doctorMatched from "../json/Doctor.json";
+import doctor from "../json/DoctorList.json";
+import { UserContext } from "../context/LevelContext";
+import { useContext, useState } from "react";
 
 function Copyright(props: any) {
   return (
@@ -35,24 +36,28 @@ function Copyright(props: any) {
 }
 
 const defaultTheme = createTheme();
-function SignIn() {
+function SignIn({setUserSelected, userSelected}) {
   const navigate = useNavigate();
+  // const userSelected = useContext(UserContext);
+  const [user, setUser] = useState("");
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const data = new FormData(event.currentTarget);
     const username = data.get("username");
     const password = data.get("password");
 
-    const matchingDoctor = doctorMatched
+    const matchingDoctor = doctor
       .filter(
         (doctorT) =>
-          doctorT.username === username && doctorT.password === password
+          doctorT.doctorName === username && doctorT.doctorLastname === password
       )
-      .map((doctorT) => doctorT.password && doctorT.username);
+      .map((doctorT) => doctorT.doctorName && doctorT.doctorLastname);
 
     if (matchingDoctor.length > 0) {
-      navigate("/doctor");
+      setUserSelected(userSelected);
+      navigate(`/signIn/${userSelected}`);
+      console.log(`/signIn/` + userSelected);
     } else {
       alert("doctor not found");
     }
@@ -71,8 +76,10 @@ function SignIn() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
+            <Avatar sx={{ m: 1, bgcolor: "transparent" }}>
+              <HealthAndSafetyOutlinedIcon
+                sx={{ color: "#0fa564", fontSize: "40px" }}
+              />
             </Avatar>
             <Typography component="h1" variant="h5">
               Sign in
@@ -131,7 +138,7 @@ function SignIn() {
             <Copyright sx={{ mt: 8, mb: 4 }} />
           </Box>
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={6} sx={{ height: "100vh" }}>
           <Box
             sx={{
               backgroundImage:

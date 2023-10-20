@@ -70,7 +70,7 @@ const StyledTableRow = styled(TableRow)(() => ({
 export default function Tables() {
   const navigate = useNavigate();
 
-  /////////////////////////// REQUEST /////////////////////////////////////
+  /////////////////////////// REQUEST W/URL /////////////////////////////////////
   const [dati, setDati] = useState([]);
   const url = useContext(TableContext);
 
@@ -78,13 +78,12 @@ export default function Tables() {
     axios
       .get(url)
       .then((response) => {
-          setDati(response.data);
+        setDati(response.data);
       })
       .catch((_error) => {
         console.log("error");
       });
   }, [url]);
-  ////////////////////////////////////////////////////////////////////////
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -97,6 +96,8 @@ export default function Tables() {
     );
   }
 
+
+
   const columns =
     dati.length > 0
       ? Object.keys(dati[0]).map((key) => ({
@@ -104,6 +105,7 @@ export default function Tables() {
           label: formatKey(key),
         }))
       : [];
+  //////////////////////////////////////////////////////////////////////////
 
   const handleChangePage = (_event: any, newPage: SetStateAction<number>) => {
     setPage(newPage);
@@ -139,15 +141,20 @@ export default function Tables() {
             >
               <TableHead>
                 <TableRow>
-                  {columns.map((column) => (
-                    <StyledTableCell key={column.id}>
-                      {column.label}
-                    </StyledTableCell>
-                  ))}
+                  {Array.isArray(dati) && dati.length > 0 ? (
+                    columns.map((column)=> (
+                      <StyledTableCell key={column.id}>
+                        {column.label}
+                      </StyledTableCell>
+                    ))
+                  ) : (
+                    <StyledTableCell>NO DATA FOUND</StyledTableCell>
+                  )}
                 </TableRow>
               </TableHead>
+
               <TableBody>
-                {dati.length > 0 ? (
+                {Array.isArray(dati) && dati.length > 0 ? (
                   dati
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => (
