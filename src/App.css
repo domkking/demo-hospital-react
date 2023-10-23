@@ -44,3 +44,22 @@
 .main-container{
   border: 1px solid #fff;
 } */
+
+.c:hover,
+.c:focus {
+  -webkit-animation: pulse 0.5s;
+          animation: pulse 0.5s;
+  box-shadow: 0 0 0 0.5em #0fa56491;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--hover);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--hover);
+  }
+}

@@ -15,8 +15,6 @@ import HealthAndSafetyOutlinedIcon from "@mui/icons-material/HealthAndSafetyOutl
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import doctor from "../json/DoctorList.json";
-import { UserContext } from "../context/LevelContext";
-import { useContext, useState } from "react";
 
 function Copyright(props: any) {
   return (
@@ -35,11 +33,12 @@ function Copyright(props: any) {
   );
 }
 
+
+//////////////////START///////////////////
+
 const defaultTheme = createTheme();
 function SignIn({setUserSelected, userSelected}) {
   const navigate = useNavigate();
-  // const userSelected = useContext(UserContext);
-  const [user, setUser] = useState("");
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -50,14 +49,15 @@ function SignIn({setUserSelected, userSelected}) {
     const matchingDoctor = doctor
       .filter(
         (doctorT) =>
-          doctorT.doctorName === username && doctorT.doctorLastname === password
+          doctorT.doctorCode === username && doctorT.doctorLastname === password
       )
-      .map((doctorT) => doctorT.doctorName && doctorT.doctorLastname);
+      .map((doctorT) => doctorT.doctorCode && doctorT.doctorLastname);
 
     if (matchingDoctor.length > 0) {
       setUserSelected(userSelected);
-      navigate(`/signIn/${userSelected}`);
-      console.log(`/signIn/` + userSelected);
+      navigate(`signIn/${userSelected}`);
+      console.log(`/${userSelected}`);
+
     } else {
       alert("doctor not found");
     }
@@ -82,7 +82,7 @@ function SignIn({setUserSelected, userSelected}) {
               />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign In [{userSelected}]
             </Typography>
             <Box
               component="form"

@@ -1,50 +1,41 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Tables from "./components/Table";
 import SignIn from "./components/SignIn";
-import Layout from "./components/Layout";
-import HomePage from "./components/HomePage";
 import { TableContext, UserContext } from "./context/LevelContext";
 import { useState } from "react";
+import Layout from "./components/HomePage";
 
 function App() {
-  const allUrl = [
-    "http://localhost:8080/doctor",
-    "http://localhost:8080/patient",
-  ];
+  const [userSelected, setUserSelected] = useState("");
 
-  const [userSelected, setUserSelected] = useState("administrator");
+  const allUrl = `http://localhost:8080/${userSelected}`;
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/signIn" element={<SignIn setUserSelected={setUserSelected} userSelected={userSelected}/>} />
-        <Route path="/layout" element={<Layout userSelected={setUserSelected} setUserSelected={setUserSelected}/>} />
         <Route
-          path="signIn/doctor"
+          path="/"
           element={
-            <UserContext.Provider value="DOCTOR">
-              <TableContext.Provider value={allUrl[0]}>
-                <Tables />
-              </TableContext.Provider>
-            </UserContext.Provider>
+            <Layout
+              userSelected={userSelected}
+              setUserSelected={setUserSelected}
+            />
           }
         />
         <Route
-          path="signIn/patient"
+          path="/signIn"
           element={
-            <UserContext.Provider value="PATIENT">
-              <TableContext.Provider value={allUrl[1]}>
-                <Tables />
-              </TableContext.Provider>
-            </UserContext.Provider>
+            <SignIn
+              userSelected={userSelected}
+              setUserSelected={setUserSelected}
+            />
           }
         />
         <Route
-          path="signIn/administrator"
+          path="signIn/:role/*"
           element={
-            <UserContext.Provider value="ADMIN">
-              <TableContext.Provider value={allUrl[0]}>
+            <UserContext.Provider value={userSelected.toUpperCase()}>
+              <TableContext.Provider value={allUrl}>
                 <Tables />
               </TableContext.Provider>
             </UserContext.Provider>

@@ -96,8 +96,6 @@ export default function Tables() {
     );
   }
 
-
-
   const columns =
     dati.length > 0
       ? Object.keys(dati[0]).map((key) => ({
@@ -142,7 +140,7 @@ export default function Tables() {
               <TableHead>
                 <TableRow>
                   {Array.isArray(dati) && dati.length > 0 ? (
-                    columns.map((column)=> (
+                    columns.map((column) => (
                       <StyledTableCell key={column.id}>
                         {column.label}
                       </StyledTableCell>

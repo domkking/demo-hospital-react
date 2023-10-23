@@ -19,6 +19,7 @@ export default function ActionAreaCard({ children, icon, color }: cardProps) {
     fontWeight: 700,
     textDecoration: "none",
   }
+
   return (
     <Card
       sx={{
@@ -27,8 +28,7 @@ export default function ActionAreaCard({ children, icon, color }: cardProps) {
         borderRadius: "10px",
       }}
 
-      className="animation"
-    >
+      className="animation c"    >
       <CardActionArea>
         <CardContent
           sx={{
